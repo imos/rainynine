@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>ないんたん天気予報＠東京</title>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="http://sx9.jp/weather/tokyo-hongo.js"></script>
+<script type="text/javascript" src="http://sx9.jp/weather/tokyo-komaba.js"></script>
+<script type="text/javascript" src="http://sx9.jp/weather/tokyo-ohokayama.js"></script>
+<script type="text/javascript" src="http://sx9.jp/weather/tokyo-roppongi.js"></script>
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(drawChart);
+
+function chart_init() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Time');
+	data.addColumn('number', '0.1 mm/h 〜');
+	data.addColumn('number', '1 mm/h 〜');
+	data.addColumn('number', '5 mm/h 〜');
+	data.addColumn('number', '10 mm/h 〜');
+	data.addColumn('number', '20 mm/h 〜');
+	data.addColumn('number', '50 mm/h 〜');
+	data.addColumn('number', '100 mm/h 〜');
+	data.addColumn('number', '予測外');
+	return data;
+}
+
+function chart_draw(data, id) {
+	var chart = new google.visualization.AreaChart(
+	    document.getElementById(id));
+	chart.draw(data, {
+	    chartArea: {top: 8},
+	    hAxis: {showTextEvery: 10, slantedText: true},
+	    vAxis: {minValue: 0, maxValue: 100},
+	    width: 1100,
+	    height: 300,
+	    colors: ['#9ff', '#039', '#390', '#ff0', '#d98d40', '#f00', '#90c', '#888', '#fff']
+	    });
+}
+
+function drawChart() {
+	var data;
+	data = chart_init();
+	update_tokyo_hongo(data);
+	chart_draw(data, 'chart_tokyo_hongo');
+	data = chart_init();
+	update_tokyo_komaba(data);
+	chart_draw(data, 'chart_tokyo_komaba');
+	data = chart_init();
+	update_tokyo_ohokayama(data);
+	chart_draw(data, 'chart_tokyo_ohokayama');
+	data = chart_init();
+	update_tokyo_roppongi(data);
+	chart_draw(data, 'chart_tokyo_roppongi');
+}
+</script>
+</head>
+<body>
+<!--
+<div style="text-align:center;font-weight:bold;font-size:120%;">
+現在，データソース変更中により値が不正確になっております
+</div>
+<p>
+-->
+<div style="text-align:center;">
+東京大学本郷キャンパスにおける降水確率<br />
+<div id="chart_tokyo_hongo"></div>
+</div>
+<div style="text-align:center;">
+東京大学駒場キャンパスにおける降水確率<br />
+<div id="chart_tokyo_komaba"></div>
+</div>
+<div style="text-align:center;">
+東京工業大学大岡山キャンパスにおける降水確率<br />
+<div id="chart_tokyo_ohokayama"></div>
+</div>
+<div style="text-align:center;">
+六本木ヒルズにおける降水確率<br />
+<div id="chart_tokyo_roppongi"></div>
+</div>
+</body>
+</html>

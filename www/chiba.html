@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="http://sx9.jp/weather/chiba-kashiwa.js"></script>
+<script type="text/javascript" src="http://sx9.jp/weather/chiba-makuhari.js"></script>
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(drawChart);
+
+function chart_init() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Time');
+	data.addColumn('number', '0.1 mm/h 〜');
+	data.addColumn('number', '1 mm/h 〜');
+	data.addColumn('number', '5 mm/h 〜');
+	data.addColumn('number', '10 mm/h 〜');
+	data.addColumn('number', '20 mm/h 〜');
+	data.addColumn('number', '50 mm/h 〜');
+	data.addColumn('number', '100 mm/h 〜');
+	data.addColumn('number', '予測外');
+	return data;
+}
+
+function chart_draw(data, id) {
+	var chart = new google.visualization.AreaChart(
+	    document.getElementById(id));
+	chart.draw(data, {
+	    chartArea: {top: 8},
+	    hAxis: {showTextEvery: 10, slantedText: true},
+	    vAxis: {minValue: 0, maxValue: 100},
+	    width: 1100,
+	    height: 300,
+	    colors: ['#9ff', '#039', '#390', '#ff0', '#d98d40', '#f00', '#90c', '#888', '#fff']
+	    });
+}
+
+function drawChart() {
+	var data;
+	data = chart_init();
+	update_chiba_kashiwa(data);
+	chart_draw(data, 'chart_chiba_kashiwa');
+	data = chart_init();
+	update_chiba_makuhari(data);
+	chart_draw(data, 'chart_chiba_makuhari');
+}
+</script>
+</head>
+<body>
+<div style="text-align:center;">
+東京大学柏キャンパスにおける降水確率<br />
+<div id="chart_chiba_kashiwa"></div>
+</div>
+<div style="text-align:center;">
+幕張における降水確率<br />
+<div id="chart_chiba_makuhari"></div>
+</div>
+</body>
+</html>

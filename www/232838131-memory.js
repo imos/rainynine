@@ -1,0 +1,1 @@
+{"per":811467,"footer":"#wakayama"}
